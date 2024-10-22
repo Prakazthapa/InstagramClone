@@ -3,6 +3,7 @@ import cloudinary from "../utils/cloudinary.js";
 import { Post } from "../models/postModel.js";
 import { User } from "../models/userModel.js";
 import { populate } from "dotenv";
+import Comment from "../models/commentModel.js";
 export const addNewPost = async (req, res) => {
   try {
     const { caption } = req.body;
@@ -209,12 +210,10 @@ export const deletePost = async (req, res) => {
     //check if the logged-in user is the owner of the post
 
     if (post.author.toString() !== authorId)
-      return res
-        .status(403)
-        .json({
-          message: "You are not authorized to delete this post",
-          success: false,
-        });
+      return res.status(403).json({
+        message: "You are not authorized to delete this post",
+        success: false,
+      });
 
     //delete post
     await Post.findByIdAndDelete(postId);
@@ -247,13 +246,11 @@ export const bookmarkPost = async (req, res) => {
       //already bookmarked -> remove from bookmarks
       await user.updateOne({ $pull: { bookmarks: post._id } });
       await user.save();
-      return res
-        .status(200)
-        .json({
-          message: "Post removed from bookmarks",
-          success: true,
-          type: "unsaved",
-        });
+      return res.status(200).json({
+        message: "Post removed from bookmarks",
+        success: true,
+        type: "unsaved",
+      });
     } else {
       //not bookmarked -> add to bookmarks
       await user.updateOne({ $addToSet: { bookmarks: post._id } });
