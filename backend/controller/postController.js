@@ -3,7 +3,7 @@ import cloudinary from "../utils/cloudinary.js";
 import { Post } from "../models/postModel.js";
 import { User } from "../models/userModel.js";
 import { populate } from "dotenv";
-import Comment from "../models/commentModel.js";
+import { Comment } from "../models/commentModel.js";
 export const addNewPost = async (req, res) => {
   try {
     const { caption } = req.body;
